@@ -1,12 +1,29 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ChildComponent } from './child/child.component';
+import { LoggerService } from './logger.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  template: `
+    <h1>Angular Decorators Demo</h1>
+    <button apphighlight>Hover to Highlight</button>
+
+    <app-child [message]= "parentMessage" (messageEvent)= "receiveMessage($event)"></app-child>
+    <p><strong>Message from Child: </strong> {{childMessage}}</p>
+  `,
+  styleUrls: ['./app.component.css'],
+        standalone: true,
+        imports: [ChildComponent]
 })
 export class AppComponent {
-  title = 'my-angular-app';
+  parentMessage = "Hello From Parent!";
+  childMessage = "";
+
+  constructor(private logger: LoggerService) {
+    this.logger.log('AppComponent initialized');
+  }
+  receiveMessage($event: any) {
+    this.childMessage = $event;
+    this.logger.log('Received message from child:', $event);
+  }
 }
