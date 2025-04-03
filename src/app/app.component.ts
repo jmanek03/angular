@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ChildComponent } from './child/child.component';
 import { LoggerService } from './logger.service';
+import { HighlightDirective } from './highlight.directive';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ import { LoggerService } from './logger.service';
   `,
   styleUrls: ['./app.component.css'],
         standalone: true,
-        imports: [ChildComponent]
+        imports: [ChildComponent, HighlightDirective]
 })
 export class AppComponent {
   parentMessage = "Hello From Parent!";
@@ -22,8 +23,7 @@ export class AppComponent {
   constructor(private logger: LoggerService) {
     this.logger.log('AppComponent initialized');
   }
-  receiveMessage($event: any) {
-    this.childMessage = $event;
-    this.logger.log('Received message from child:', $event);
+  receiveMessage(event: string) {
+    this.childMessage = event;
   }
 }
